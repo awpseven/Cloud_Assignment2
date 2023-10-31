@@ -16,6 +16,19 @@ import java.util.concurrent.Future;
  * @author james
  *
  */
+
+// Dispatch controls a number of different geographical regions, 
+// e.g. one for North and one for South. Each region has a maximum number of bookings that can be running with a driver at any point. 
+// If a job for a passenger starts in the North region, it counts towards North’s active job count for the entirety of the job, 
+// i.e. it doesn’t start in the North region’s count, and end in the South region. Wherever the job begins, 
+// that’s where it remains for counting purposes.
+
+// When a new region is created, it is given a reference to the Dispatch object, the region’s name, 
+// as well as the maximum number of simultaneous jobs that this region can perform. 
+// You can think of this like having a pool of available jobs, and those jobs can be executed.
+
+// When a region is asked to book a passenger by dispatch, it creates a new Booking object, and adds the booking ready for processing.
+
 public class NuberRegion {
 
 	
