@@ -9,6 +9,22 @@ import java.util.concurrent.Future;
  * @author james
  *
  */
+
+// Dispatch handles everything to do with running an instance of Nuber: 
+// adding/providing drivers, booking passengers, and when required, shutting everything down.
+
+// It contains a map of the regions it’s responsible for, and a central collection of Drivers awaiting a booking. 
+// It also has a variable, set by its constructor, for whether the reportEvent() function prints information out to the console. 
+// You can use this function to print out debugging information if required.
+
+
+// When a passenger is booked into dispatch using bookPassenger(), 
+// dispatch is also told which region the job is in. Dispatch then needs to get that region, 
+// and book the passenger into that specific “Nuber Region” using the region’s bookPassenger() function.
+
+// Drivers are allocated on a first-in, first-out basis. Because passengers are allocated to a specific region, 
+// different regions will be accessing a central collection of available drivers from Dispatch.
+
 public class NuberDispatch {
 
 	/**
