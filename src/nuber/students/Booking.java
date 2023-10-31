@@ -18,6 +18,18 @@ package nuber.students;
  * @author james
  *
  */
+
+// When a booking is made, it’s given a reference to the Nuber Dispatch, 
+// as well as the passenger that’s made the booking, these should be stored as private variables. 
+// Each Booking has a globally unique, sequential, job ID. The first job created should be number 1. 
+// When a booking is created, the current time should be recorded so we can track how long a booking takes.
+
+
+// When a booking is created, Nuber might not have enough resource available to start that booking immediately 
+// (e.g. a region that has no available spots in it’s booking pool, or no drivers are available from Dispatch). 
+// At some point, the Nuber Region responsible for the booking can start it (has free spot), 
+// and calls the Booking.call() to carry out the booking (see the class code for more information). 
+
 public class Booking {
 
 		
@@ -43,7 +55,7 @@ public class Booking {
 	 * 4.	It must then call the Driver.driveToDestination() function, with the thread pausing 
 	 * 			whilst as function is called.
 	 * 5.	Once at the destination, the time is recorded, so we know the total trip duration. 
-	 * 6.	The driver, now free, is added back into Dispatch�s list of available drivers. 
+	 * 6.	The driver, now free, is added back into Dispatch’s list of available drivers. 
 	 * 7.	The call() function the returns a BookingResult object, passing in the appropriate 
 	 * 			information required in the BookingResult constructor.
 	 *
