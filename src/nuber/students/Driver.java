@@ -11,6 +11,8 @@ public class Driver extends Person {
 	
 	public Driver(String driverName, int maxSleep)
 	{
+		self.name = driverName;
+		self.maxSleep = maxSleep;
 	}
 	
 	/**
@@ -22,6 +24,7 @@ public class Driver extends Person {
 	 */
 	public void pickUpPassenger(Passenger newPassenger)
 	{
+		this.currentPassenger = newPassenger;
 	}
 
 	/**
