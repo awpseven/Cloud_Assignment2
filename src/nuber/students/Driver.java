@@ -1,7 +1,13 @@
 package nuber.students;
+// Driver inherits from Person (so we can store the person’s name and maxSleep). 
+// It provides a function called pickUpPassenger that takes in a Passenger as an argument, 
+// stores it into a private variable, and then sleeps the current thread for a delay between 0-maxDelay milliseconds. 
+// The class has another function driveToDestination(), 
+// that sleeps the current thread for a delay based on the current passenger’s getTravelTime().
 
 public class Driver extends Person {
 
+	private Passenger currentPassenger;
 	
 	public Driver(String driverName, int maxSleep)
 	{
