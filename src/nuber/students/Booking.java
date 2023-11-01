@@ -31,7 +31,7 @@ package nuber.students;
 // and calls the Booking.call() to carry out the booking (see the class code for more information). 
 
 public class Booking {
-
+	private Passenger bookedPassenger;
 		
 	/**
 	 * Creates a new booking for a given Nuber dispatch and passenger, noting that no
@@ -43,6 +43,7 @@ public class Booking {
 	 */
 	public Booking(NuberDispatch dispatch, Passenger passenger)
 	{
+		this.bookedPassenger = passenger;
 	}
 	
 	/**
