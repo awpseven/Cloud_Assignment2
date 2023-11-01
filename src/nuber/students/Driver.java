@@ -25,6 +25,7 @@ public class Driver extends Person {
 	public void pickUpPassenger(Passenger newPassenger)
 	{
 		this.currentPassenger = newPassenger;
+		driveToDestination();
 	}
 
 	/**
@@ -34,6 +35,8 @@ public class Driver extends Person {
 	 * @throws InterruptedException
 	 */
 	public void driveToDestination() {
+		int time = this.currentPassenger.getTravelTime();
+		time.sleep(time);
 	}
 	
 }
