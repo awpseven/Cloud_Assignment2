@@ -31,7 +31,12 @@ import java.util.concurrent.Future;
 
 public class NuberRegion {
 
-	
+	private NuberDispatch dispatch;
+	private String regionName;
+	private int maxSimultaneousJobs;
+	private int currentSimultaneousJobs;
+
+	private boolean shutDown = false;
 	/**
 	 * Creates a new Nuber region
 	 * 
@@ -41,8 +46,9 @@ public class NuberRegion {
 	 */
 	public NuberRegion(NuberDispatch dispatch, String regionName, int maxSimultaneousJobs)
 	{
-		
-
+		this.dispatch = dispatch;
+		this.regionName = regionName;
+		this.maxSimultaneousJobs = maxSimultaneousJobs;
 	}
 	
 	/**
@@ -58,7 +64,18 @@ public class NuberRegion {
 	 */
 	public Future<BookingResult> bookPassenger(Passenger waitingPassenger)
 	{		
-		
+		if(shutDown){
+			System.out.println("[NuberRegion]" + regionName+": Booking Rejected - Shutting Down.");
+			return null;
+		}else if (currentSimultaneousJobs >= maxSimultaneousJobs) {
+			System.out.println("[NuberRegion]" + regionName+": Booking Rejected - maxSimultaneousJobs reached.");
+			return null;
+		}else {
+			currentSimultaneousJobs++;
+			Booking booking = new Booking(dispatch, waitingPassenger);
+			dispatch.addBooking(booking);
+			return booking.call();
+		}
 	}
 	
 	/**
@@ -66,6 +83,8 @@ public class NuberRegion {
 	 */
 	public void shutdown()
 	{
+		shutDown = true;
+		System.out.println("[NuberRegion]" + regionName+": Starting to Shut down...");
 	}
 		
 }
