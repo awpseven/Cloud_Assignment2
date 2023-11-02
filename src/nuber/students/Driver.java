@@ -8,7 +8,8 @@ package nuber.students;
 public class Driver extends Person {
 
 	private Passenger currentPassenger;
-	
+	public long tripDuration;
+
 	public Driver(String driverName, int maxSleep)
 	{
 		super(driverName, maxSleep);
@@ -25,6 +26,7 @@ public class Driver extends Person {
 	{
 		this.currentPassenger = newPassenger;
 		int pickUpTime = (int)(Math.random() * maxSleep);
+		this.tripDuration = pickUpTime;
 		Thread.sleep(pickUpTime * 1000L);
 	}
 
@@ -35,8 +37,9 @@ public class Driver extends Person {
 	 * @throws InterruptedException
 	 */
 	public void driveToDestination() throws InterruptedException {
-		int time = this.currentPassenger.getTravelTime();
-		Thread.sleep(time * 1000L);
+		int driveTime = this.currentPassenger.getTravelTime();
+		this.tripDuration = this.tripDuration + driveTime;
+		Thread.sleep(driveTime * 1000L);
 	}
 	
 }

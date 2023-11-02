@@ -36,7 +36,7 @@ public class Booking {
 	private final AtomicInteger ID = new AtomicInteger();
 	private Passenger bookedPassenger;
 	private Driver bookedDriver;
-
+	private NuberDispatch dispatch;
 	/**
 	 * Creates a new booking for a given Nuber dispatch and passenger, noting that no
 	 * driver is provided as it will depend on whether one is available when the region 
@@ -47,8 +47,8 @@ public class Booking {
 	 */
 	public Booking(NuberDispatch dispatch, Passenger passenger)
 	{
+		this.dispatch = dispatch;
 		this.bookedPassenger = passenger;
-		this.bookedDriver = dispatch.getDriver();
 	}
 	
 	/**
@@ -67,9 +67,12 @@ public class Booking {
 	 *
 	 * @return A BookingResult containing the final information about the booking 
 	 */
-	public BookingResult call() {
-		BookingResult result = new BookingResult(ID.get(), bookedPassenger, bookedDriver, bookedDriver.maxSleep);
-		return result;
+	public BookingResult call() throws InterruptedException {
+		this.bookedDriver = dispatch.getDriver();
+		this.bookedDriver.pickUpPassenger(bookedPassenger);
+		this.bookedDriver.driveToDestination();
+		long tripDuration = bookedDriver.tripDuration;
+        return new BookingResult(ID.incrementAndGet(), bookedPassenger, bookedDriver, tripDuration);
 	}
 	
 	/***
@@ -85,8 +88,7 @@ public class Booking {
 	@Override
 	public String toString()
 	{
-		String bookResult = String.format("%d:%s:%s", ID.get(),bookedDriver.name, bookedPassenger.name);
-		return bookResult;
+        return String.format("%d:%s:%s", ID.get(),bookedDriver.name, bookedPassenger.name);
 	}
 
 }
