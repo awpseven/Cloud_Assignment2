@@ -12,8 +12,6 @@ public class Driver extends Person {
 	public Driver(String driverName, int maxSleep)
 	{
 		super(driverName, maxSleep);
-		super.name = driverName;
-		super.maxSleep = maxSleep;
 	}
 	
 	/**
@@ -26,7 +24,8 @@ public class Driver extends Person {
 	public void pickUpPassenger(Passenger newPassenger) throws InterruptedException
 	{
 		this.currentPassenger = newPassenger;
-		driveToDestination();
+		int pickUpTime = (int)(Math.random() * maxSleep);
+		Thread.sleep(pickUpTime * 1000L);
 	}
 
 	/**
@@ -37,7 +36,7 @@ public class Driver extends Person {
 	 */
 	public void driveToDestination() throws InterruptedException {
 		int time = this.currentPassenger.getTravelTime();
-		Thread.sleep(time*1000);
+		Thread.sleep(time * 1000L);
 	}
 	
 }
