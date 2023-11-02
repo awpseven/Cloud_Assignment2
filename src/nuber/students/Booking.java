@@ -1,5 +1,7 @@
 package nuber.students;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * 
  * Booking represents the overall "job" for a passenger getting to their destination.
@@ -34,6 +36,7 @@ public class Booking {
 	private final AtomicInteger ID = new AtomicInteger();
 	private Passenger bookedPassenger;
 	private Driver bookedDriver;
+
 	/**
 	 * Creates a new booking for a given Nuber dispatch and passenger, noting that no
 	 * driver is provided as it will depend on whether one is available when the region 
@@ -65,7 +68,8 @@ public class Booking {
 	 * @return A BookingResult containing the final information about the booking 
 	 */
 	public BookingResult call() {
-
+		BookingResult result = new BookingResult(ID.get(), bookedPassenger, bookedDriver, bookedDriver.maxSleep);
+		return result;
 	}
 	
 	/***

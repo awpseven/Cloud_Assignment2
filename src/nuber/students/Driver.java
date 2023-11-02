@@ -11,8 +11,9 @@ public class Driver extends Person {
 	
 	public Driver(String driverName, int maxSleep)
 	{
-		self.name = driverName;
-		self.maxSleep = maxSleep;
+		super(driverName, maxSleep);
+		super.name = driverName;
+		super.maxSleep = maxSleep;
 	}
 	
 	/**
@@ -22,7 +23,7 @@ public class Driver extends Person {
 	 * @param newPassenger Passenger to collect
 	 * @throws InterruptedException
 	 */
-	public void pickUpPassenger(Passenger newPassenger)
+	public void pickUpPassenger(Passenger newPassenger) throws InterruptedException
 	{
 		this.currentPassenger = newPassenger;
 		driveToDestination();
@@ -34,9 +35,9 @@ public class Driver extends Person {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public void driveToDestination() {
+	public void driveToDestination() throws InterruptedException {
 		int time = this.currentPassenger.getTravelTime();
-		time.sleep(time);
+		Thread.sleep(time*1000);
 	}
 	
 }
