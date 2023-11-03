@@ -2,6 +2,7 @@ package nuber.students;
 
 import java.util.HashMap;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The core Dispatch class that instantiates and manages everything for Nuber
@@ -31,9 +32,11 @@ public class NuberDispatch {
 	 * The maximum number of idle drivers that can be awaiting a booking 
 	 */
 	private final int MAX_DRIVERS = 999;
-	
+	public final AtomicInteger ID = new AtomicInteger();
+
 	private boolean logEvents = false;
-	
+
+	private HashMap<String, Integer> regionInfo;
 	/**
 	 * Creates a new dispatch objects and instantiates the required regions and any other objects required.
 	 * It should be able to handle a variable number of regions based on the HashMap provided.
@@ -43,6 +46,8 @@ public class NuberDispatch {
 	 */
 	public NuberDispatch(HashMap<String, Integer> regionInfo, boolean logEvents)
 	{
+		this.regionInfo = regionInfo;
+		this.logEvents = logEvents;
 	}
 	
 	/**
