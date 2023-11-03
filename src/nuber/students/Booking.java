@@ -1,6 +1,7 @@
 package nuber.students;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.Callable;
 
 /**
  * 
@@ -32,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 // At some point, the Nuber Region responsible for the booking can start it (has free spot), 
 // and calls the Booking.call() to carry out the booking (see the class code for more information). 
 
-public class Booking {
+public class Booking implements Callable<BookingResult>{
 	private final Passenger bookedPassenger;
 	private Driver bookedDriver;
 	private final NuberDispatch dispatch;

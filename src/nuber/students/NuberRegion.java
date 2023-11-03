@@ -1,7 +1,8 @@
 package nuber.students;
 
 import java.util.concurrent.Future;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 /**
  * A single Nuber region that operates independently of other regions, other than getting 
  * drivers from bookings from the central dispatch.
@@ -35,7 +36,8 @@ public class NuberRegion {
 	private String regionName;
 	public int maxSimultaneousJobs;
 	private int currentSimultaneousJobs;
-	ExecutorService executor;
+
+	private ExecutorService executor;
 	private boolean shutDown = false;
 	/**
 	 * Creates a new Nuber region
@@ -74,8 +76,8 @@ public class NuberRegion {
 		}else {
 			currentSimultaneousJobs++;
 			Booking booking = new Booking(dispatch, waitingPassenger);
-			dispatch.addBooking(booking);
-			return booking.call();
+
+			return executor.submit(booking);
 		}
 	}
 	
@@ -85,6 +87,7 @@ public class NuberRegion {
 	public void shutdown()
 	{
 		shutDown = true;
+		executor.shutdown();
 		System.out.println("[NuberRegion]" + regionName+": Starting to Shut down...");
 	}
 		
