@@ -33,9 +33,9 @@ public class NuberRegion {
 
 	private NuberDispatch dispatch;
 	private String regionName;
-	private int maxSimultaneousJobs;
+	public int maxSimultaneousJobs;
 	private int currentSimultaneousJobs;
-
+	ExecutorService executor;
 	private boolean shutDown = false;
 	/**
 	 * Creates a new Nuber region
@@ -46,6 +46,7 @@ public class NuberRegion {
 	 */
 	public NuberRegion(NuberDispatch dispatch, String regionName, int maxSimultaneousJobs)
 	{
+		this.executor = Executors.newFixedThreadPool(maxSimultaneousJobs);
 		this.dispatch = dispatch;
 		this.regionName = regionName;
 		this.maxSimultaneousJobs = maxSimultaneousJobs;
