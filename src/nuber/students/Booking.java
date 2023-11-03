@@ -50,6 +50,7 @@ public class Booking {
 		this.ID = dispatch.ID.incrementAndGet();
 		this.dispatch = dispatch;
 		this.bookedPassenger = passenger;
+		this.bookedDriver = null;
 	}
 	
 	/**
@@ -69,10 +70,25 @@ public class Booking {
 	 * @return A BookingResult containing the final information about the booking 
 	 */
 	public BookingResult call() throws InterruptedException {
+		System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ": Start to request a driver");
+		dispatch.addDriver(bookedDriver);
 		this.bookedDriver = dispatch.getDriver();
+		System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
+				+": Driver ready and start to pick up the passenger");
 		this.bookedDriver.pickUpPassenger(bookedPassenger);
+		System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
+				+": Picked up the passenger & drive to the destination");
 		this.bookedDriver.driveToDestination();
 		long tripDuration = bookedDriver.tripDuration;
+		System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
+				+": trip finish with [tripDuration]" + tripDuration);
+		if( this.dispatch.addDriver(bookedDriver)){
+			System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
+					+": Free the driver.");
+		}else{
+			System.out.println("[ERROR][Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
+					+": Failed to free the driver.");
+		}
         return new BookingResult(ID, bookedPassenger, bookedDriver, tripDuration);
 	}
 	
