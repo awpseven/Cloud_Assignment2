@@ -33,10 +33,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 // and calls the Booking.call() to carry out the booking (see the class code for more information). 
 
 public class Booking {
-	private final AtomicInteger ID = new AtomicInteger();
-	private Passenger bookedPassenger;
+	private final Passenger bookedPassenger;
 	private Driver bookedDriver;
-	private NuberDispatch dispatch;
+	private final NuberDispatch dispatch;
+	private final int ID;
 	/**
 	 * Creates a new booking for a given Nuber dispatch and passenger, noting that no
 	 * driver is provided as it will depend on whether one is available when the region 
@@ -47,6 +47,7 @@ public class Booking {
 	 */
 	public Booking(NuberDispatch dispatch, Passenger passenger)
 	{
+		this.ID = dispatch.ID.incrementAndGet();
 		this.dispatch = dispatch;
 		this.bookedPassenger = passenger;
 	}
@@ -72,7 +73,7 @@ public class Booking {
 		this.bookedDriver.pickUpPassenger(bookedPassenger);
 		this.bookedDriver.driveToDestination();
 		long tripDuration = bookedDriver.tripDuration;
-        return new BookingResult(ID.incrementAndGet(), bookedPassenger, bookedDriver, tripDuration);
+        return new BookingResult(ID, bookedPassenger, bookedDriver, tripDuration);
 	}
 	
 	/***
@@ -88,7 +89,9 @@ public class Booking {
 	@Override
 	public String toString()
 	{
-        return String.format("%d:%s:%s", ID.get(),bookedDriver.name, bookedPassenger.name);
+		String driverName = bookedDriver == null ? "null" : bookedDriver.name;
+		String passengerName = bookedPassenger == null ? "null" : bookedPassenger.name;
+        return String.format("%d:%s:%s", ID, driverName, passengerName);
 	}
 
 }
