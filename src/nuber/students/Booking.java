@@ -52,6 +52,7 @@ public class Booking implements Callable<BookingResult>{
 		this.dispatch = dispatch;
 		this.bookedPassenger = passenger;
 		this.bookedDriver = null;
+		System.out.println("[Create] Created Booking:" + this );
 	}
 	
 	/**
@@ -71,26 +72,19 @@ public class Booking implements Callable<BookingResult>{
 	 * @return A BookingResult containing the final information about the booking 
 	 */
 	public BookingResult call() throws InterruptedException {
-		System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ": Start to request a driver");
-		dispatch.getDriver();
+		System.out.println("[Booking]" + this + "- Start to request a driver");
 		this.bookedDriver = dispatch.getDriver();
-		System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
-				+": Driver ready and start to pick up the passenger");
+		System.out.println("[Booking]" + this + "- Driver ready and start to pick up the passenger");
 		this.bookedDriver.pickUpPassenger(bookedPassenger);
-		System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
-				+": Picked up the passenger & drive to the destination");
+		System.out.println("[Booking]" + this  + "- Picked up the passenger & drive to the destination");
 		this.bookedDriver.driveToDestination();
 		long tripDuration = bookedDriver.tripDuration;
-		System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
-				+": trip finish with [tripDuration]" + tripDuration);
+		System.out.println("[Booking]" + this +"- trip finish with [TripDuration]" + tripDuration);
 		if( this.dispatch.addDriver(bookedDriver)){
-			System.out.println("[Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
-					+": Free the driver.");
+			System.out.println("[Booking]" + this +": Free the driver.");
 		}else{
-			System.out.println("[ERROR][Booking]" + ID + ", [Passenger]" + bookedPassenger.name + ",[Driver]" + bookedDriver.name
-					+": Failed to free the driver.");
+			System.out.println("[ERROR][Booking]" + this +"- Failed to free the driver.");
 		}
-		toString
         return new BookingResult(ID, bookedPassenger, bookedDriver, tripDuration);
 	}
 	

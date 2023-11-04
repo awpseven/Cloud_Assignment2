@@ -78,11 +78,11 @@ public class AssignmentDriver {
 		regions.put("South", 50);
 //		System.out.println(13);
 
-//		new Simulation(regions, 1, 10, 10, logEvents);
+		new Simulation(regions, 1, 10, 10, logEvents);
 //		new Simulation(regions, 5, 10, 10, logEvents);
 //		new Simulation(regions, 10, 10, 10, logEvents);
-		new Simulation(regions, 10, 100, 10, logEvents);
-		new Simulation(regions, 1, 50, 10, logEvents);
+//		new Simulation(regions, 10, 100, 10, logEvents);
+//		new Simulation(regions, 1, 50, 10, logEvents);
 	}
 
 }

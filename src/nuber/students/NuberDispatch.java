@@ -43,6 +43,7 @@ public class NuberDispatch {
 	private HashMap<String, NuberRegion> regionMap;
 
 	private int awaitingDriver;
+	private Future<BookingResult> futureResult;
 
 	/**
 	 * Creates a new dispatch objects and instantiates the required regions and any other objects required.
@@ -53,22 +54,24 @@ public class NuberDispatch {
 	 */
 	public NuberDispatch(HashMap<String, Integer> regionInfo, boolean logEvents)
 	{
+		this.futureResult = null;
 		this.regionInfo = regionInfo;
 		this.logEvents = logEvents;
 		this.awaitingDriver = 0;
 		this.driverList = new ArrayBlockingQueue<Driver>(MAX_DRIVERS);
 		this.regionMap = new HashMap<String, NuberRegion>();
+
 		System.out.println("[NuberDispatch] is creating " + this.regionInfo.size() + "Nuber Dispatch");
-		for(var region: this.regionInfo.entrySet()) {
+		regionInfo.forEach(
+			(name, maxDelay) -> {
+				System.out.println("Creating [NumberRegions]" + name + " ");
 
-			String Name = region.getKey();
-			Integer maxDelay = region.getValue();
-			System.out.println("Creating [NumberRegions]" + Name + " ");
+				NuberRegion _region = new NuberRegion(this, name, maxDelay);
+				regionMap.put(name, _region);
+				System.out.println("[NumberRegions]" + name + "  created successfully.");
+			}
+		);
 
-			NuberRegion _region = new NuberRegion(this, Name, maxDelay);
-			regionMap.put(Name, _region);
-			System.out.println("[NumberRegions]" + Name + "  created successfully.");
-		}
 	}
 
 	/**
@@ -83,10 +86,9 @@ public class NuberDispatch {
 	{
 		try {
 			driverList.put(newDriver);
-			awaitingDriver++;
 			return true;
 		} catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("[ERROR]Unable to getDriver():"+e.getMessage());
 			return false;
 		}
 	}
@@ -106,7 +108,7 @@ public class NuberDispatch {
 			return valDriver;
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("[ERROR]Unable to getDriver():"+e.getMessage());
 			return null;
 		}
 	}
@@ -120,9 +122,9 @@ public class NuberDispatch {
 	 * @param message The message to show
 	 */
 	public void logEvent(Booking booking, String message) {
-		if (!logEvents) return;
-		System.out.println("[Booking]" +booking + ": " + message);
-
+		if (logEvents){
+			System.out.println(booking + ": " + message);
+		}
 	}
 
 	/**
@@ -138,9 +140,14 @@ public class NuberDispatch {
 	 */
 	public Future<BookingResult> bookPassenger(Passenger passenger, String region) {
 		NuberRegion allocatedRegion = regionMap.get(region);
-		Future<BookingResult> futureResult = allocatedRegion.bookPassenger(passenger);
-		return futureResult;
-	}
+		futureResult = allocatedRegion.bookPassenger(passenger);
+		if(futureResult == null){
+			return null;
+		}else{
+			awaitingDriver++;
+			return futureResult;
+		}
+    }
 
 	/**
 	 * Gets the number of non-completed bookings that are awaiting a driver from dispatch
@@ -158,9 +165,11 @@ public class NuberDispatch {
 	 * Tells all regions to finish existing bookings already allocated, and stop accepting new bookings
 	 */
 	public void shutdown() {
-		for(NuberRegion region: regionMap.values()) {
-			region.shutdown();
-		}
+		regionMap.forEach(
+				(key, region) -> {
+					System.out.println("[NuberDipatch] Shutting down [Region]" + region.regionName + "...");
+					region.shutdown();
+				}
+		);
 	}
-
 }

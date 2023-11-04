@@ -32,12 +32,12 @@ import java.util.concurrent.Executors;
 
 public class NuberRegion {
 
-	private NuberDispatch dispatch;
-	private String regionName;
+	private final NuberDispatch dispatch;
+	public String regionName;
 	public int maxSimultaneousJobs;
 	private int currentSimultaneousJobs;
 
-	private ExecutorService executor;
+	private final ExecutorService executor;
 	private boolean shutDown = false;
 	/**
 	 * Creates a new Nuber region
@@ -52,6 +52,7 @@ public class NuberRegion {
 		this.dispatch = dispatch;
 		this.regionName = regionName;
 		this.maxSimultaneousJobs = maxSimultaneousJobs;
+		System.out.println("[Create] Created NuberRegion:" + regionName);
 	}
 	
 	/**
@@ -74,6 +75,7 @@ public class NuberRegion {
 			System.out.println("[NuberRegion]" + regionName+": Booking Rejected - maxSimultaneousJobs reached.");
 			return null;
 		}else {
+			System.out.println("[NuberRegion]" + regionName+": Booking confirmed with [Passenger]" + waitingPassenger.name);
 			currentSimultaneousJobs++;
 			Booking booking = new Booking(dispatch, waitingPassenger);
 

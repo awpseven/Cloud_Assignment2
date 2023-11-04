@@ -53,8 +53,10 @@ public class Simulation {
 			
 			//add each passenger to dispatch to book their travel for a random region
 			Future<BookingResult> f = dispatch.bookPassenger(p, randomRegion);
+			System.out.println("here is "+ dispatch.ID.get());
 			if (f != null)
 			{
+
 				//store the future to our list
 				bookings.add(f);
 			}

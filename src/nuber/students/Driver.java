@@ -27,7 +27,7 @@ public class Driver extends Person {
 		this.currentPassenger = newPassenger;
 		int pickUpTime = (int)(Math.random() * maxSleep);
 		this.tripDuration = pickUpTime;
-		System.out.println("[driver]" + this.name + ": Start to pick up the passenger. [Dutation]" + pickUpTime);
+		System.out.println("[Driver]" + this.name + ": Start to pick up the passenger. [Duration]" + pickUpTime);
 		Thread.sleep(pickUpTime * 1000L);
 	}
 
@@ -40,7 +40,7 @@ public class Driver extends Person {
 	public void driveToDestination() throws InterruptedException {
 		int driveTime = this.currentPassenger.getTravelTime();
 		this.tripDuration = this.tripDuration + driveTime;
-		System.out.println("[driver]" + this.name + ": Start to drive to the destination. [Dutation]" + driveTime);
+		System.out.println("[Driver]" + this.name + ": Start to drive to the destination. [Duration]" + driveTime);
 		Thread.sleep(driveTime * 1000L);
 	}
 	
